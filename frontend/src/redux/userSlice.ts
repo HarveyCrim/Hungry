@@ -3,13 +3,17 @@ import { createSlice } from "@reduxjs/toolkit";
 const userSlice = createSlice({
     name : "userSlice",
     initialState : {
-        appDrawer : false
+        appDrawer : false,
+        userMenu : false
     },
     reducers : {
         setAppDrawer : (state, action) => {
             state.appDrawer = action.payload
+        },
+        setUserMenu : (state, action) => {
+            state.userMenu = action.payload
         }
     }
 })
-export const {setAppDrawer} = userSlice.actions
+export const {setAppDrawer, setUserMenu} = userSlice.actions
 export default userSlice.reducer
