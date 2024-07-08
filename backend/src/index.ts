@@ -4,6 +4,7 @@ import "dotenv/config"
 import mongoose, { mongo } from "mongoose"
 import cookieParser from "cookie-parser"
 import userRouter from "./routes/userRouter"
+import resRouter from "./routes/restaurantRouter"
 
 const app = express()
 try{
@@ -15,5 +16,10 @@ catch(err){
 app.use(express.json())
 app.use(cors())
 app.use(cookieParser())
+app.get("/health", (req: Request, res: Response) => {
+    res.send({"message" : "healthy"})
+})
+
 app.use("/api/user", userRouter)
+app.use("/api/res", resRouter)
 app.listen(process.env.PORT, () => console.log("listening"))

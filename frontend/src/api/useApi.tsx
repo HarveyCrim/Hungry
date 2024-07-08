@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { BASE_URL } from '../credentials'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-
+const BASE_URL = import.meta.env.VITE_BASE_URL
 type user = {
     auth0Id: string,
     email : string,
@@ -23,12 +22,14 @@ export const getUser = () => {
     const query = useQuery( {
         queryKey: ["singleuser"],
         queryFn: async () => {
+            
             const token = localStorage.getItem("token")
             if(!token)
                 return null
+            console.log("making request")
             const resp =  await axios({
                 method:"get",
-                url:"http://localhost:3000/api/user/",
+                url:BASE_URL+"/api/user/",
                 headers: {
                     Authorization: JSON.parse(token)
                 }
@@ -57,8 +58,7 @@ export const changeUser = () => {
             })
             return resp.data
         },
-        onSuccess : (data, user, context) => {
-            console.log(data)
+        onSuccess : () => {
             client.invalidateQueries({queryKey: ["singleuser"]})
         }
     })
@@ -71,6 +71,7 @@ export const changeUser = () => {
 export const createUser = () => {
     const client = useQueryClient()
     const createRequest = async (data: user) => {
+        console.log("creating user")
         const resp = await axios({
             method:'post',
             url: BASE_URL+"/api/user/create",
@@ -81,9 +82,8 @@ export const createUser = () => {
 
     const userMutation = useMutation({
         mutationFn: createRequest,
-        onSuccess: (data, variables, context) => {
-            console.log("first")
-            console.log(data)
+        onSuccess: (data) => {
+            console.log("success")
             localStorage.setItem("token", JSON.stringify(data.data.token))
             client.invalidateQueries({queryKey: ["singleuser"]})
         },

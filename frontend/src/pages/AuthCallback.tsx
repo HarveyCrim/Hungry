@@ -6,10 +6,11 @@ import { createUser } from '../api/useApi'
 const AuthCallback = () => {
   const {user} = useAuth0()
   const navigate = useNavigate()
-  const {isSuccess, data, createANewUser} = createUser()
+  const {isSuccess, createANewUser} = createUser()
   useEffect(() => {
     const ans = {auth0Id: user?.sub as string, email: user?.email as string, name: user?.name as string}
     const run = async () => {
+        console.log("creating a new use")
         await createANewUser(ans)
     }
     run()
