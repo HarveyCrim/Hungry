@@ -1,9 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import zod from "zod"
-import zodSchema from "../zodSchemas/restaurant"
+import zodSchema, { zodSchema2 } from "../zodSchemas/restaurant"
+import { toast } from "sonner"
 zodSchema
 type restaurant = zod.infer<typeof zodSchema> 
+// type restaurant2 = zod.infer<typeof zodSchema2> 
 const BASE_URL = import.meta.env.VITE_BASE_URL
 export const getRes = () => {
     const query = useQuery({
@@ -41,6 +43,7 @@ export const createRes = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey : ["restaurant"]})
+            toast.success("Information Successfully updated!")
         }
     })
     const { data, isSuccess, isPending, mutateAsync: createTheRes } = fn

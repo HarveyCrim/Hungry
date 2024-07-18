@@ -22,6 +22,7 @@ const restarurantSchema = new mongoose.Schema({
     },
     deliveryTime: Number,
     cuisines: [Boolean],
+    cuisineList: [String],
     menuItems: [MenuItem],
     imageUrl: String
 })

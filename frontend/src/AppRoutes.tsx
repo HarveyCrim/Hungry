@@ -11,6 +11,7 @@ import { Toaster } from 'sonner';
 import ProtectedRoutes from './components/ProtectedRoutes'
 import { setAppDrawer } from './redux/userSlice'
 import ManageRestaurant from './components/ManageRestaurant'
+import SearchPage from './pages/SearchPage'
 const AppRoutes = () => {
   const myref = useRef<HTMLDivElement | null>(null)
   const menuState = useSelector<IRootState, boolean>(state => state.userReducer.appDrawer)
@@ -37,6 +38,7 @@ const AppRoutes = () => {
         <Route element = {<ProtectedRoutes />}>
             <Route path = "/user-profile" element = {<UserProfile />} />
             <Route path = "/manage-restaurant" element = {<ManageRestaurant />} />
+            <Route path = "/search/:city" element = {<SearchPage />} />
         </Route>
     </Routes>
     </div>

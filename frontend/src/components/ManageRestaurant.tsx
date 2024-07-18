@@ -1,4 +1,4 @@
-import {  useEffect,  useState } from 'react'
+import {  useEffect, useMemo, useState } from 'react'
 import Header from './Header'
 import Footer from './Footer'
 import { MdDelete } from "react-icons/md";
@@ -16,17 +16,24 @@ const ManageRestaurant = () => {
     resolver: zodResolver(zodSchema)
   }) 
   useEffect(() => {
-    reset({
-        name : resData?.data.name,
-        city: resData?.data.city || "",
-        country: resData?.data.country,
-        imageUrl:resData?.data.imageUrl || "",
-        deliveryPrice: resData?.data.deliveryPrice || 0,
-        deliveryTime: resData?.data.deliveryTime || 0,
-        cuisines: resData?.data.cuisines || [],
-        menuItems: resData?.data.menuItems || []
-    })
-    setImage(resData?.data.imageUrl)
+    if(!resData?.data){
+        return
+    }
+    else{
+        console.log("resdata")
+        console.log(resData)
+        reset({
+            name : resData?.data.name,
+            city: resData?.data.city || "",
+            country: resData?.data.country,
+            imageUrl:resData?.data.imageUrl || "",
+            deliveryPrice: resData?.data.deliveryPrice || 0,
+            deliveryTime: resData?.data.deliveryTime || 0,
+            cuisines: resData?.data.cuisines || [],
+            menuItems: resData?.data.menuItems || []
+        })
+        setImage(resData?.data.imageUrl)
+    }
   },[resData, isSuccess])
 
   const {createTheRes} = createRes()

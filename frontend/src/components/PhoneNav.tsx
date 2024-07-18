@@ -28,6 +28,7 @@ const PhoneNav = () => {
                 <div className = "w-[90%] mt-2 mx-auto bg-[#FCAB31] h-[3px]"></div>
                 </div>}
             {isAuthenticated && <Link className = "mx-auto pt-5 text-center block" onClick ={() => {dispatch(setAppDrawer(false))}} to ="/user-profile">User Profile</Link>}
+            {isAuthenticated && <Link onClick ={() => {dispatch(setAppDrawer(false))}} className = "mx-auto  text-center block" to = {"/manage-restaurant"}>My Restaurant</Link>}
             {isAuthenticated && <button onClick = {() => {logout(); localStorage.removeItem("token")}}className = "bg-black text-2xl text-white font-bold rounded-lg py-2 px-4 mx-auto block" >Log out</button>}
         </div>
     </div>
