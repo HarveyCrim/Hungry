@@ -38,7 +38,7 @@ const AppRoutes = () => {
         <Route element = {<ProtectedRoutes />}>
             <Route path = "/user-profile" element = {<UserProfile />} />
             <Route path = "/manage-restaurant" element = {<ManageRestaurant />} />
-            <Route path = "/search/:city" element = {<SearchPage />} />
+            <Route path = "/restaurant/city/:city" element = {<SearchPage />} />
         </Route>
     </Routes>
     </div>

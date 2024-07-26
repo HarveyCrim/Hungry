@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import zod from "zod"
-import zodSchema, { zodSchema2 } from "../zodSchemas/restaurant"
+import zodSchema from "../zodSchemas/restaurant"
 import { toast } from "sonner"
 zodSchema
 type restaurant = zod.infer<typeof zodSchema> 
@@ -26,6 +26,25 @@ export const getRes = () => {
         data, isSuccess, isFetching
     }
 }
+
+export const getResList = () => {
+    console.log("reqbdoy")
+    const {data, isSuccess, isPending, mutateAsync: runResList} = useMutation({
+        mutationFn : async (info : {city?: string, sort? : string, cuisineList?: string[], name?: string, page: string}) => {
+            const resp = await axios({
+                url : BASE_URL + `/api/res/restaurants/city?page=`+info.page,
+                method: "post",
+                headers : {
+                    Authorization : JSON.parse(localStorage.getItem("token") as string)
+                },
+                data : info,
+            })
+            return resp
+        }
+    })
+    return {data, isSuccess, isPending, runResList}
+}
+
 
 export const createRes = () => {
     const queryClient = useQueryClient()

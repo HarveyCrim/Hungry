@@ -1,20 +1,18 @@
 import {Request, Response} from "express"
 import { userModel } from "../models/user"
 import resModel from "../models/restaurant"
-import { cuisineList } from "../../cuisines"
-cuisineList
+import  {clist}  from "../../cuisines"
 const saveRestaurant = async (req: Request, res: Response) => {
     let cuisinesAct = []
-    for(let i = 0; i < cuisineList.length; i++){
+    for(let i = 0; i < clist?.length; i++){
         if(req.body.cuisines[i]){
-            cuisinesAct.push(cuisineList[i])
+            cuisinesAct.push(clist[i])
         }
     }
     req.body.cuisineList = cuisinesAct
     const email = res.locals.id
     const user = await userModel.findOne({email})
     const restaurant = await resModel.findOne({userId:user?._id})
-    console.log("in here")
     if(restaurant){
         const updRes = await resModel.findByIdAndUpdate(restaurant._id, req.body, {new : true})
         res.json(updRes)
@@ -46,6 +44,26 @@ const getRestaurants = async (req: Request, res: Response) => {
     }
 }
 
+const getRestaurantsInCity = async (req: Request, res: Response) => {
+    let queryObj: any = {}
+    queryObj["city"] = req.body.city
+    const actpage = Number(req.query.page)
+    if(req.body.name.length > 0){
+        queryObj["name"] = new RegExp(req.body.name ,'i')
+    }
+    if(req.body.cuisineList.length > 0){
+        queryObj["cuisineList"] = {$all : req.body.cuisineList}
+        console.log(req.body.cuisineList)
+    }
+    
+    const total = await resModel.countDocuments(queryObj)
+    let restaurants = null
+    if(req.body.sort.length > 0)
+        restaurants = await resModel.find(queryObj).sort({[req.body.sort] : 1}).skip((actpage - 1) * 5).limit(5)
+    else
+        restaurants = await resModel.find(queryObj).skip((actpage - 1) * 5).limit(5)
+    res.json({restaurants, total})
+}
 export default {
-    saveRestaurant,getRestaurant, getRestaurants
+    saveRestaurant,getRestaurant, getRestaurants, getRestaurantsInCity
 }
