@@ -1,4 +1,4 @@
-import { MouseEventHandler, useState } from "react"
+import { useState } from "react"
 
 const Cuisine = ({clickState, cuisine, clickFunc} : {clickState: boolean, cuisine: string, clickFunc: () => void}) => {
   const [clicked, setClicked] = useState<boolean>(clickState)

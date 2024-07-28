@@ -12,6 +12,7 @@ import ProtectedRoutes from './components/ProtectedRoutes'
 import { setAppDrawer } from './redux/userSlice'
 import ManageRestaurant from './components/ManageRestaurant'
 import SearchPage from './pages/SearchPage'
+import Restaurant from './pages/Restaurant'
 const AppRoutes = () => {
   const myref = useRef<HTMLDivElement | null>(null)
   const menuState = useSelector<IRootState, boolean>(state => state.userReducer.appDrawer)
@@ -39,6 +40,7 @@ const AppRoutes = () => {
             <Route path = "/user-profile" element = {<UserProfile />} />
             <Route path = "/manage-restaurant" element = {<ManageRestaurant />} />
             <Route path = "/restaurant/city/:city" element = {<SearchPage />} />
+            <Route path = "/restaurant/:id" element = {<Restaurant />} />
         </Route>
     </Routes>
     </div>

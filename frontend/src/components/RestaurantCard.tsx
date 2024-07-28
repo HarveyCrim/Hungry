@@ -1,8 +1,14 @@
 import { LuClock4 } from "react-icons/lu";
 import { FaMoneyBillWave } from "react-icons/fa";
-const RestaurantCard = ({image, name, time, price, cuisines} : {image : string, name: string, time: string, price: number, cuisines: []}) => {
+import { useNavigate } from "react-router-dom";
+const RestaurantCard = ({image, name, time, price, cuisines, id} : {image : string, name: string, time: string, price: number, id: string, cuisines: []}) => {
+  const navigate = useNavigate()
+  const showRest = () => {
+    return navigate("/restaurant/"+id)
+  }
+
   return (
-    <div className = "cursor-pointer border-2 flex md:h-[220px] max-w-[900px] rounded-lg mx-auto">
+    <div onClick = {() => showRest()} className = "cursor-pointer border-2 flex md:h-[220px] max-w-[900px] rounded-lg mx-auto">
         <div className=" hidden md:inline rounded-xl overflow-hidden border-3 w-[40%] border-red-500">
             <img className = "h-full object-cover" src = {image} alt = ""/>
         </div>

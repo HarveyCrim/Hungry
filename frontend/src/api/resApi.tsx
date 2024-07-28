@@ -27,6 +27,21 @@ export const getRes = () => {
     }
 }
 
+export const getSingleRes = (id: string) => {
+    const {mutateAsync: getSingleResFn, isPending, data} = useMutation({
+        mutationFn: async () => {
+            const resp = await axios({
+                method: "get",
+                url: BASE_URL+"/api/res/restaurants/single/"+id,
+                headers: {
+                    Authorization: JSON.parse(localStorage.getItem("token") as string)
+                }
+            })
+            return resp
+        }
+    })
+    return {isPending, data, getSingleResFn}
+}
 export const getResList = () => {
     console.log("reqbdoy")
     const {data, isSuccess, isPending, mutateAsync: runResList} = useMutation({

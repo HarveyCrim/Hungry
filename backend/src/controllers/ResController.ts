@@ -30,6 +30,12 @@ const getRestaurant = async (req: Request, res: Response) => {
     res.json(rest)
 }
 
+const getSingleRestaurant = async (req: Request, res: Response) => {
+    const {id} = req.params
+    const restaurant = await resModel.findById(id)
+    res.json(restaurant)
+}
+
 const getRestaurants = async (req: Request, res: Response) => {
     if(req.body.cuisineFilter){
         const rests = await resModel.find({
@@ -65,5 +71,5 @@ const getRestaurantsInCity = async (req: Request, res: Response) => {
     res.json({restaurants, total})
 }
 export default {
-    saveRestaurant,getRestaurant, getRestaurants, getRestaurantsInCity
+    saveRestaurant,getRestaurant, getRestaurants, getRestaurantsInCity, getSingleRestaurant
 }

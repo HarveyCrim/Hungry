@@ -44,7 +44,6 @@ const SearchPage = () => {
     const foundIndex = selectedCuisines.indexOf(target as string)
     console.log("clicked")
     console.log(foundIndex)
-    // if(foundIndex){.splice(foundIndex, 1)
       if(foundIndex == -1){
         setSelectedCuisines([target,...selectedCuisines])
       }
@@ -55,7 +54,6 @@ const SearchPage = () => {
         console.log(newArray)
         setSelectedCuisines(newArray)
       }
-    // }
   }
   if(isPending)
     return <SpinnerCircular />
@@ -95,7 +93,7 @@ const SearchPage = () => {
             <div className=" space-y-5">
               {
                 data?.data.restaurants.map((item : any, index: number) => {
-                  return <RestaurantCard key = {index} image = {item.imageUrl} name = {item.name} time = {item.deliveryTime} price = {item.deliveryPrice} cuisines = {item.cuisineList}/>
+                  return <RestaurantCard key = {index} image = {item.imageUrl} id = {item._id.toString()} name = {item.name} time = {item.deliveryTime} price = {item.deliveryPrice} cuisines = {item.cuisineList}/>
                 })
               }
             </div>
