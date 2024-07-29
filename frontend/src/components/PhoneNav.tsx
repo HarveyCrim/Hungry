@@ -8,12 +8,13 @@ import { RxAvatar } from "react-icons/rx";
 import { useAuth0 } from '@auth0/auth0-react';
 import { Link } from 'react-router-dom';
 const PhoneNav = () => {
+    const blur = useSelector<IRootState, boolean>(state => state.blurReducer.blur)
     const drawer = useSelector<IRootState, boolean>(state => state.userReducer.appDrawer)
     const {isAuthenticated, user, logout, loginWithRedirect} = useAuth0()
     const dispatch = useDispatch()
     const slideRef = useRef<HTMLDivElement | null> (null)
     return (
-        <div ref = {slideRef} className = {`md:hidden ${!drawer ? "hidden" : "flex"} z-50 fixed animate-in slide-in-from-right top-[0px] z-10 right-[0px] flex-col min-h-screen bg-orange-500/90 w-[80%] border-2 border-orange-500`}>
+        <div ref = {slideRef} className = {`md:hidden ${!drawer ? "hidden" : "flex"} ${blur && "opacity-10"} z-50 fixed animate-in slide-in-from-right top-[0px] z-10 right-[0px] flex-col min-h-screen bg-orange-500/90 w-[80%] border-2 border-orange-500`}>
         <IoMdClose onClick = {() => dispatch(setAppDrawer(false))} className='fill-white self-end m-2 cursor-pointer hover:fill-black' size = {50}/>
         <div className='h-fit w-fit self-center mt-[40px] text-white font-semibold text-2xl space-y-4'>
             {!isAuthenticated && <p>Sign up</p>}

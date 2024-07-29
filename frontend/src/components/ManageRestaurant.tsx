@@ -20,8 +20,6 @@ const ManageRestaurant = () => {
         return
     }
     else{
-        console.log("resdata")
-        console.log(resData)
         reset({
             name : resData?.data.name,
             city: resData?.data.city || "",

@@ -15,6 +15,7 @@ import SearchPage from './pages/SearchPage'
 import Restaurant from './pages/Restaurant'
 const AppRoutes = () => {
   const myref = useRef<HTMLDivElement | null>(null)
+  const blur = useSelector<IRootState, boolean>(state => state.blurReducer.blur)
   const menuState = useSelector<IRootState, boolean>(state => state.userReducer.appDrawer)
   console.log("rend")
   const dispatch = useDispatch()
@@ -31,7 +32,7 @@ const AppRoutes = () => {
   }, [menuState])
   getUser()
   return (
-    <div ref = {myref} className = "z-30">
+    <div ref = {myref} className = {`z-30`}>
     <Toaster />
         <Routes>
         <Route path = "/" element = {<Layout1></Layout1>} />

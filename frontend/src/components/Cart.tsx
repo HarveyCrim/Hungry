@@ -1,6 +1,8 @@
 import { useSelector } from "react-redux"
 import { IRootState } from "../redux/store"
 import CartItem from "./CartItem"
+import { useDispatch } from "react-redux"
+import { switchBlur } from "../redux/blurSlice" 
 type product = {
     name: string,
     quantity: number,
@@ -8,6 +10,7 @@ type product = {
 }
 const Cart = ({deliveryPrice, id}: {deliveryPrice: number, id: string}) => {
   const resId = useSelector<IRootState, string>(state => state.cartReducer.resId)
+  const dispatch = useDispatch()
   const products = useSelector<IRootState, product[]>((state) => state.cartReducer.products)
   const total = useSelector<IRootState, number>((state) => state.cartReducer.total)
   return (
@@ -31,7 +34,7 @@ const Cart = ({deliveryPrice, id}: {deliveryPrice: number, id: string}) => {
                 <span className="text-xl font-medium">{"$"+deliveryPrice}</span>
             </div>
         </div>}
-        <button className={`disabled ${(total == 0 || resId !== id) && "cursor-default bg-orange-300"} bg-orange-500 text-white font-medium block mx-auto text-xl p-2 rounded-lg`}>Go to Checkout</button>
+        <button onClick = {() => dispatch(switchBlur(true))} className={`disabled ${(total == 0 || resId !== id) && "cursor-default bg-orange-300"} bg-orange-500 text-white font-medium block mx-auto text-xl p-2 rounded-lg`}>Go to Checkout</button>
     </div>
   )
 }

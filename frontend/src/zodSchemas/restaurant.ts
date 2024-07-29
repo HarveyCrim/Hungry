@@ -9,6 +9,14 @@ const ifTrue = (data: boolean[]) => {
     return false
 }
 
+export const userSchema = zod.object({
+    email : zod.string().email().min(1),
+    name : zod.string().min(1),
+    address: zod.string().min(1),
+    city: zod.string().min(1),
+    country: zod.string().min(1)
+})
+
 const zodSchema = zod.object({ 
     name : zod.string().min(2),
     city: zod.string().min(3),
