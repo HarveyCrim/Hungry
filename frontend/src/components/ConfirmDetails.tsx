@@ -6,12 +6,25 @@ import { useDispatch } from "react-redux";
 import { switchBlur } from "../redux/blurSlice";
 import { useEffect } from "react";
 import { getUserManually } from "../api/useApi";
+import { useSelector } from "react-redux";
+import { IRootState } from "../redux/store";
+import { useLocation } from "react-router-dom";
+import { createCheckoutFrontEnd } from "../api/orderApi";
+type product = {
+    name: string,
+    quantity: number,
+    price: number,
+    id: string
+}
 const ConfirmDetails = () => {
   const dispatch = useDispatch()
+  const location = useLocation()
+  const products = useSelector<IRootState, product[]>(state => state.cartReducer.products)
   const {register, handleSubmit, reset} = useForm<userType>({
     resolver: zodResolver(userSchema)
   })
   const {data, isPending, getUserWithClick} = getUserManually()
+  const {stripeData, checkoutCreated } = createCheckoutFrontEnd()
   useEffect(() => {
     if(!data)
         getUserWithClick()
@@ -27,9 +40,44 @@ const ConfirmDetails = () => {
 
   }, [data])
   type userType = Zod.infer<typeof userSchema>
-  
-  const submit: SubmitHandler<userType> = (data: userType) => {
-    console.log(data)
+  type checkoutRequest = {
+    cartItems: {
+        menuItemId: string,
+        name: string,
+        quantity: number
+    }[],
+    deliveryDetails: {
+        email: string,
+        name: string,
+        address: string,
+        city: string
+    },
+    restaurantId: string
+}
+  const submit: SubmitHandler<userType> = async (data: userType) => {
+    const submitData: checkoutRequest = {
+        cartItems: products?.map((item: product) => {
+            return {
+                menuItemId: item.id as string,
+                name: item.name as string,
+                quantity: item.quantity
+            }
+        }),
+        deliveryDetails: {
+            email: data.email,
+            name: data.name,
+            address: data.address,
+            city: data.city
+        },
+        restaurantId: location.pathname.slice(12)
+    }
+    console.log("submitdata")
+    console.log(submitData)
+    await checkoutCreated(submitData)
+
+  }
+  if(stripeData){
+    window.location.href = stripeData.data?.url as string
   }
   if(isPending){
     return <></>

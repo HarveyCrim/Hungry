@@ -37,7 +37,7 @@ const Restaurant = () => {
                     <div>
                         {
                             data?.data.menuItems.map((item: {itemName: string, itemPrice: number}, index: number) => {
-                                return <MenuItem id = {id!} key = {index} name = {item.itemName} price = {item.itemPrice}/>
+                                return <MenuItem id = {id!}  key = {index} name = {item.itemName} price = {item.itemPrice}/>
                             })
                         }
                     </div>
@@ -47,7 +47,7 @@ const Restaurant = () => {
                 <Cart id = {id!} deliveryPrice = {data?.data.deliveryPrice}/>
             </div>
         </div>
-        {blur && <ConfirmDetails city = {}/>}
+        {blur && <ConfirmDetails/>}
     </div>
   )
 }

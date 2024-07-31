@@ -34,7 +34,11 @@ const Cart = ({deliveryPrice, id}: {deliveryPrice: number, id: string}) => {
                 <span className="text-xl font-medium">{"$"+deliveryPrice}</span>
             </div>
         </div>}
-        <button onClick = {() => dispatch(switchBlur(true))} className={`disabled ${(total == 0 || resId !== id) && "cursor-default bg-orange-300"} bg-orange-500 text-white font-medium block mx-auto text-xl p-2 rounded-lg`}>Go to Checkout</button>
+        <button onClick = {() => {
+            if(total == 0 || resId !== id)
+                    return
+                dispatch(switchBlur(true))
+            }} className={`disabled ${(total == 0 || resId !== id) ? "cursor-default bg-orange-300" : "bg-orange-500 cursor-pointer"} text-white font-medium block mx-auto text-xl p-2 rounded-lg`}>Go to Checkout</button>
     </div>
   )
 }

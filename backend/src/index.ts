@@ -5,6 +5,7 @@ import mongoose, { mongo } from "mongoose"
 import cookieParser from "cookie-parser"
 import userRouter from "./routes/userRouter"
 import resRouter from "./routes/restaurantRouter"
+import orderRouter from "./routes/OrderRouter"
 
 const app = express()
 try{
@@ -22,4 +23,5 @@ app.get("/health", (req: Request, res: Response) => {
 
 app.use("/api/user", userRouter)
 app.use("/api/res", resRouter)
+app.use("/api/orders", orderRouter)
 app.listen(process.env.PORT, () => console.log("listening"))

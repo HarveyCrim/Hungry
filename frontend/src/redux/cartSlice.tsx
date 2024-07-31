@@ -2,8 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 type product = {
     name: string,
     quantity: number,
-    price: number
+    price: number,
+    id: string,
 }
+
 type state = {
     total: number,
     products: product[],
@@ -33,7 +35,7 @@ const cartSlice = createSlice({
                 state.products = []
             }
             state.total += action.payload.price
-            state.products.push({name: action.payload.name, quantity: 1, price: action.payload.price})
+            state.products.push({name: action.payload.name, quantity: 1, price: action.payload.price, id: action.payload.id})
         },
         deleteFromCart: (state, action) => {
             for(let i = 0; i < state.products.length; i++){
