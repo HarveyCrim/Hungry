@@ -2,6 +2,8 @@ import {Request, Response} from "express"
 import resModel, { menuItemType } from "../models/restaurant"
 import Stripe from "stripe"
 import mongoose from "mongoose"
+import { orderModel } from "../models/order"
+import { userModel } from "../models/user"
 const stripe = new Stripe(process.env.STRIPE_SECRET as string)
 type checkoutRequest = {
     cartItems: {
@@ -46,16 +48,30 @@ const createCheckoutSession = async(req: Request, res: Response) => {
     try{
         const dataToSend: checkoutRequest = req.body
         const restaurant = await resModel.findById(req.body.restaurantId)
+        const userId = res.locals.signed.id
+        const userDoc = await userModel.findOne({email : userId})
         const lineitems = createLineItems(dataToSend, restaurant?.menuItems!)
-        const session = await createStripeSession(lineitems, "TEST_ID" , restaurant?.deliveryPrice as number, restaurant?._id.toString() as string)
-        // console.log(session)
+        const order = await orderModel.create(
+            {
+                restaurant: restaurant?._id,
+                user: userDoc?._id, 
+                deliveryDetails: {
+                    email: userDoc?.email,
+                    name: userDoc?.email,
+                    address: userDoc?.address,
+                    city: userDoc?.city
+                },
+                cartItems:dataToSend.cartItems,
+                status:"placed"
+            }
+        )
+        const session = await createStripeSession(lineitems, order._id.toString() , restaurant?.deliveryPrice as number, restaurant?._id.toString() as string)
         if(!session.url){
             res.status(500).json({message : "Error creating stripe session"})
         }
         res.json({url: session.url})
     }
     catch(error){
-        // console.log(error)
         res.status(500).json(error)
     }
 }
@@ -86,6 +102,11 @@ const createStripeSession = async (lineItems: Stripe.Checkout.SessionCreateParam
     return sessionData
 }
 
+const stripeHandler = (req: Request, res: Response) => {
+    console.log("f")
+}
+
 export default {
-    createCheckoutSession
+    createCheckoutSession,
+    stripeHandler
 }
